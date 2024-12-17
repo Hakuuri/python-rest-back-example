@@ -18,10 +18,19 @@ class UserTestCase(unittest.TestCase):
             db.session.remove()
             db.drop_all()
 
+    def test_get_all_users_empty(self):
+        response = self.app.get('/users')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, [])
+
     def test_create_user(self):
         response = self.client.post("/api/users", json={"name": "John Doe", "email": "john@example.com"})
         self.assertEqual(response.status_code, 201)
         self.assertIn("John Doe", str(response.data))
+
+    def test_get_user_not_found(self):
+        response = self.app.get('/users/1')
+        self.assertEqual(response.status_code, 404)
 
     def test_get_users(self):
         self.client.post("/api/users", json={"name": "John Doe", "email": "john@example.com"})

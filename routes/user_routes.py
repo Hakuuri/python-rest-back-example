@@ -4,18 +4,21 @@ from models.user import User
 
 user_routes = Blueprint("user_routes", __name__)
 
+# GET /users - Récupérer tous les utilisateurs
 @user_routes.route("/users", methods=["GET"])
 def get_users():
-    users = User.query.all()
+    users = db.session.query(User).all()
     return jsonify([user.to_dict() for user in users]), 200
 
+# GET /users/<int:user_id> - Récupérer un utilisateur par ID
 @user_routes.route("/users/<int:user_id>", methods=["GET"])
 def get_user(user_id):
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)  # Utiliser db.session.get() pour SQLAlchemy 2.0
     if user:
         return jsonify(user.to_dict()), 200
     return jsonify({"error": "User not found"}), 404
 
+# POST /users - Créer un nouvel utilisateur
 @user_routes.route("/users", methods=["POST"])
 def create_user():
     data = request.get_json()
@@ -30,9 +33,10 @@ def create_user():
     db.session.commit()
     return jsonify(new_user.to_dict()), 201
 
+# PUT /users/<int:user_id> - Mettre à jour un utilisateur
 @user_routes.route("/users/<int:user_id>", methods=["PUT"])
 def update_user(user_id):
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)  # Utiliser db.session.get() pour récupérer l'utilisateur
     if not user:
         return jsonify({"error": "User not found"}), 404
 
@@ -42,9 +46,10 @@ def update_user(user_id):
     db.session.commit()
     return jsonify(user.to_dict()), 200
 
+# DELETE /users/<int:user_id> - Supprimer un utilisateur
 @user_routes.route("/users/<int:user_id>", methods=["DELETE"])
 def delete_user(user_id):
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)  # Utiliser db.session.get() pour récupérer l'utilisateur
     if not user:
         return jsonify({"error": "User not found"}), 404
 
