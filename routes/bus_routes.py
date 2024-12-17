@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify
 from models.bus import Bus
 from models.database import db
 
+
+
 bus_routes = Blueprint("bus_routes", __name__)
 
 # GET /buses - Récupérer tous les bus
@@ -13,7 +15,8 @@ def get_buses():
 # GET /buses/<id> - Récupérer un bus par ID
 @bus_routes.route("/buses/<int:id>", methods=["GET"])
 def get_bus(id):
-    bus = Bus.query.get(id)
+    bus = db.session.get(Bus, id)
+        
     if not bus:
         return jsonify({"error": "Bus not found"}), 404
     return jsonify(bus.to_dict()), 200
@@ -33,7 +36,7 @@ def create_bus():
 # PUT /buses/<id> - Mettre à jour un bus
 @bus_routes.route("/buses/<int:id>", methods=["PUT"])
 def update_bus(id):
-    bus = Bus.query.get(id)
+    bus = db.session.get(Bus, id)
     if not bus:
         return jsonify({"error": "Bus not found"}), 404
 
@@ -46,7 +49,7 @@ def update_bus(id):
 # DELETE /buses/<id> - Supprimer un bus
 @bus_routes.route("/buses/<int:id>", methods=["DELETE"])
 def delete_bus(id):
-    bus = Bus.query.get(id)
+    bus = db.session.get(Bus, id)
     if not bus:
         return jsonify({"error": "Bus not found"}), 404
 

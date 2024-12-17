@@ -2,29 +2,31 @@ from flask import Blueprint, request, jsonify
 from models.database import db
 from models.user import User
 
+# Définition du blueprint avec "user_routes"
 user_routes = Blueprint("user_routes", __name__)
 
-# GET /users - Récupérer tous les utilisateurs
-@user_routes.route("/users", methods=["GET"])
+# Récupérer tous les utilisateurs (GET /api/user)
+@user_routes.route("/", methods=["GET"])
 def get_users():
-    users = db.session.query(User).all()
+    users = User.query.all()
     return jsonify([user.to_dict() for user in users]), 200
 
-# GET /users/<int:user_id> - Récupérer un utilisateur par ID
-@user_routes.route("/users/<int:user_id>", methods=["GET"])
+# Récupérer un utilisateur par ID (GET /api/user/<user_id>)
+@user_routes.route("/<int:user_id>", methods=["GET"])
 def get_user(user_id):
-    user = db.session.get(User, user_id)  # Utiliser db.session.get() pour SQLAlchemy 2.0
+    user = db.session.get(User, user_id)  # Remplacement par la nouvelle méthode
     if user:
         return jsonify(user.to_dict()), 200
     return jsonify({"error": "User not found"}), 404
 
-# POST /users - Créer un nouvel utilisateur
-@user_routes.route("/users", methods=["POST"])
+# Créer un utilisateur (POST /api/user)
+@user_routes.route("/", methods=["POST"])
 def create_user():
     data = request.get_json()
     if not data.get("name") or not data.get("email"):
         return jsonify({"error": "Name and email are required"}), 400
 
+    # Correction ici : utilisation de User.query.filter_by()
     if User.query.filter_by(email=data["email"]).first():
         return jsonify({"error": "Email already exists"}), 400
 
@@ -33,10 +35,10 @@ def create_user():
     db.session.commit()
     return jsonify(new_user.to_dict()), 201
 
-# PUT /users/<int:user_id> - Mettre à jour un utilisateur
-@user_routes.route("/users/<int:user_id>", methods=["PUT"])
+# Mettre à jour un utilisateur (PUT /api/user/<user_id>)
+@user_routes.route("/<int:user_id>", methods=["PUT"])
 def update_user(user_id):
-    user = db.session.get(User, user_id)  # Utiliser db.session.get() pour récupérer l'utilisateur
+    user = db.session.get(User, user_id)  # Correction
     if not user:
         return jsonify({"error": "User not found"}), 404
 
@@ -46,10 +48,10 @@ def update_user(user_id):
     db.session.commit()
     return jsonify(user.to_dict()), 200
 
-# DELETE /users/<int:user_id> - Supprimer un utilisateur
-@user_routes.route("/users/<int:user_id>", methods=["DELETE"])
+# Supprimer un utilisateur (DELETE /api/user/<user_id>)
+@user_routes.route("/<int:user_id>", methods=["DELETE"])
 def delete_user(user_id):
-    user = db.session.get(User, user_id)  # Utiliser db.session.get() pour récupérer l'utilisateur
+    user = db.session.get(User, user_id)  # Correction
     if not user:
         return jsonify({"error": "User not found"}), 404
 

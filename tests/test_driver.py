@@ -16,7 +16,7 @@ class DriverTestCase(unittest.TestCase):
 
     def test_create_driver(self):
         """Test de la création d'un chauffeur"""
-        response = self.client.post("/api/drivers", json={
+        response = self.client.post("/api/driver/", json={
             "name": "Alice Smith",
             "license_number": "LIC12345"
         })
@@ -26,13 +26,13 @@ class DriverTestCase(unittest.TestCase):
     def test_get_all_drivers(self):
         """Test de récupération de tous les chauffeurs"""
         # Créer un chauffeur
-        self.client.post("/api/drivers", json={
+        self.client.post("/api/driver/", json={
             "name": "Alice Smith",
             "license_number": "LIC12345"
         })
 
         # Vérifier la récupération
-        response = self.client.get("/api/drivers")
+        response = self.client.get("/api/driver/")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json), 1)
         self.assertEqual(response.json[0]["name"], "Alice Smith")
@@ -40,26 +40,26 @@ class DriverTestCase(unittest.TestCase):
     def test_get_driver_by_id(self):
         """Test de récupération d'un chauffeur par ID"""
         # Créer un chauffeur
-        self.client.post("/api/drivers", json={
+        self.client.post("/api/driver/", json={
             "name": "Bob Johnson",
             "license_number": "LIC67890"
         })
 
         # Récupérer le chauffeur par ID
-        response = self.client.get("/api/drivers/1")
+        response = self.client.get("/api/driver/1")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json["name"], "Bob Johnson")
 
     def test_update_driver(self):
         """Test de mise à jour d'un chauffeur"""
         # Créer un chauffeur
-        self.client.post("/api/drivers", json={
+        self.client.post("/api/driver/", json={
             "name": "Charlie Brown",
             "license_number": "LIC00001"
         })
 
         # Mise à jour des informations
-        response = self.client.put("/api/drivers/1", json={
+        response = self.client.put("/api/driver/1", json={
             "name": "Charlie Updated",
             "license_number": "LIC99999"
         })
@@ -69,18 +69,18 @@ class DriverTestCase(unittest.TestCase):
     def test_delete_driver(self):
         """Test de suppression d'un chauffeur"""
         # Créer un chauffeur
-        self.client.post("/api/drivers", json={
+        self.client.post("/api/driver/", json={
             "name": "David King",
             "license_number": "LIC54321"
         })
 
         # Supprimer le chauffeur
-        response = self.client.delete("/api/drivers/1")
+        response = self.client.delete("/api/driver/1")
         self.assertEqual(response.status_code, 200)
         self.assertIn("deleted", response.json["message"])
 
         # Vérifier que le chauffeur n'existe plus
-        response = self.client.get("/api/drivers/1")
+        response = self.client.get("/api/driver/1")
         self.assertEqual(response.status_code, 404)
 
 if __name__ == "__main__":
