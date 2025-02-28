@@ -1,0 +1,36 @@
+Feature: Gestion des produits
+
+  Scenario: Récupérer tous les produits
+    Given il existe des produits dans le système
+    When je fais une requête GET sur "/products"
+    Then je devrais recevoir une réponse contenant tous les produits
+    And le statut de la réponse devrait être 200
+
+  Scenario: Récupérer un produit par ID
+    Given un produit avec l'ID 1 existe
+    When je fais une requête GET sur "/products/1"
+    Then je devrais recevoir les informations du produit avec l'ID 1
+    And le statut de la réponse devrait être 200
+
+  Scenario: Créer un produit
+    Given je veux ajouter un nouveau produit
+    When je fais une requête POST sur "/products" avec les données suivantes :
+      | name      | price | stock |
+      | Produit A | 19.99 | 100  |
+    Then un nouveau produit est créé
+    And je devrais recevoir un statut 201
+
+  Scenario: Mettre à jour un produit
+    Given un produit avec l'ID 1 existe
+    When je fais une requête PUT sur "/products/1" avec les données suivantes :
+      | name      | price | stock |
+      | Produit B | 29.99 | 150  |
+    Then le produit avec l'ID 1 doit être mis à jour
+    And je devrais recevoir un statut 200
+
+  Scenario: Supprimer un produit
+    Given un produit avec l'ID 1 existe
+    When je fais une requête DELETE sur "/products/1"
+    Then le produit avec l'ID 1 est supprimé
+    And je devrais recevoir un message de confirmation
+    And le statut de la réponse devrait être 200

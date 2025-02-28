@@ -8,4 +8,7 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
 
     def to_dict(self):
+        """
+        Retourne une représenttation dictionnaire de la facture.
+        """
         return {"id": self.id, "name": self.name, "email": self.email}

@@ -1,0 +1,56 @@
+1. User Story pour la gestion des factures
+User Story 1 : Créer une facture
+
+    En tant qu' administrateur,
+    Je veux pouvoir créer une nouvelle facture,
+    Afin de pouvoir générer des documents de facturation pour mes clients.
+
+Critères d'acceptation :
+
+    Le système doit accepter un nom de client, une liste de produits et un montant total.
+    Si les données sont valides, la facture doit être enregistrée dans la base de données.
+    Si des informations sont manquantes ou incorrectes, une erreur doit être renvoyée (erreur 400).
+
+User Story 2 : Récupérer toutes les factures
+
+    En tant qu' utilisateur,
+    Je veux pouvoir voir toutes les factures,
+    Afin de consulter l'historique des factures.
+
+Critères d'acceptation :
+
+    Le système doit retourner une liste de toutes les factures existantes.
+    Si aucune facture n'existe, une liste vide doit être retournée.
+
+User Story 3 : Récupérer une facture par ID
+
+    En tant qu' utilisateur,
+    Je veux pouvoir consulter les détails d'une facture spécifique,
+    Afin de vérifier les informations de la facture.
+
+Critères d'acceptation :
+
+    Le système doit retourner les détails d'une facture si l'ID est valide.
+    Si l'ID est inexistant, une erreur 404 doit être renvoyée.
+
+User Story 4 : Mettre à jour une facture
+
+    En tant qu' administrateur,
+    Je veux pouvoir mettre à jour les informations d'une facture,
+    Afin de corriger des erreurs ou modifier des informations.
+
+Critères d'acceptation :
+
+    Le système doit accepter un nouvel état de la facture et mettre à jour la base de données.
+    Si l'ID de la facture n'existe pas, une erreur 404 doit être renvoyée.
+
+User Story 5 : Supprimer une facture
+
+    En tant qu' administrateur,
+    Je veux pouvoir supprimer une facture,
+    Afin de retirer des factures qui ne sont plus nécessaires.
+
+Critères d'acceptation :
+
+    Le système doit supprimer la facture de la base de données.
+    Si l'ID de la facture n'existe pas, une erreur 404 doit être renvoyée.
